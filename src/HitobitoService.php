@@ -8,7 +8,7 @@ use OAuth\OAuth2\Service\AbstractService;
 use OAuth\OAuth2\Token\StdOAuth2Token;
 use OAuth\OAuth2\Token\TokenInterface;
 
-class ExternalConcrete5Service extends AbstractService
+class HitobitoService extends AbstractService
 {
 
     /** @var string Scope for forcing OIDC */

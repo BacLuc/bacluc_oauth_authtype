@@ -87,7 +87,7 @@ class ServiceFactory
             $credentials,
             $storage,
             [
-                ExternalConcrete5Service::SCOPE_OPENID,
+                HitobitoService::SCOPE_OPENID,
             ],
             $baseApiUrl);
     }

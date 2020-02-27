@@ -15,7 +15,7 @@ class ServiceProvider extends \Concrete\Core\Foundation\Service\Provider
         // Register our extractor
         $this->app->extend('oauth/factory/extractor',
             function (ExtractorFactory $factory) {
-                $factory->addExtractorMapping(ExternalConcrete5Service::class, Extractor::class);
+                $factory->addExtractorMapping(HitobitoService::class, Extractor::class);
 
                 return $factory;
             });
@@ -23,7 +23,7 @@ class ServiceProvider extends \Concrete\Core\Foundation\Service\Provider
         // Register our service
         $this->app->extend('oauth/factory/service',
             function (ServiceFactory $factory) {
-                $factory->registerService('external_concrete5', ExternalConcrete5Service::class);
+                $factory->registerService('external_concrete5', HitobitoService::class);
                 return $factory;
             });
     }

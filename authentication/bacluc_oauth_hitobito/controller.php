@@ -79,7 +79,7 @@ class Controller extends GenericOauth2TypeController
      * Get the service object associated with this authentication type
      * This method uses the oauth/factory/service object to create our service if one is not set
      *
-     * @return \Concrete\Core\Authentication\Type\ExternalConcrete5\ExternalConcrete5Service
+     * @return \Concrete\Core\Authentication\Type\ExternalConcrete5\HitobitoService
      */
     public function getService()
     {

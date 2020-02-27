@@ -11,7 +11,7 @@ class Extractor extends LazyExtractor
 {
     const USER_PATH = '/ccm/api/v1/account/info';
 
-    /** @var \Concrete\Core\Authentication\Type\ExternalConcrete5\ExternalConcrete5Service */
+    /** @var \Concrete\Core\Authentication\Type\ExternalConcrete5\HitobitoService */
     protected $service;
 
     public function __construct()
