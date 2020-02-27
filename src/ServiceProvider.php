@@ -1,11 +1,13 @@
 <?php
 
-namespace Concrete\Core\Authentication\Type\ExternalConcrete5;
+namespace BaclucOauthAuthtype;
 
+use Concrete\Core\Foundation\Service\Provider;
+use Concrete\Package\BaclucOauthAuthtype\Authentication\BaclucOauthHitobito\Controller;
 use OAuth\ServiceFactory;
 use OAuth\UserData\ExtractorFactory;
 
-class ServiceProvider extends \Concrete\Core\Foundation\Service\Provider
+class ServiceProvider extends Provider
 {
     /**
      * Register the service provider.
@@ -23,7 +25,7 @@ class ServiceProvider extends \Concrete\Core\Foundation\Service\Provider
         // Register our service
         $this->app->extend('oauth/factory/service',
             function (ServiceFactory $factory) {
-                $factory->registerService('external_concrete5', HitobitoService::class);
+                $factory->registerService(Controller::OAUTH_HANDLE, HitobitoService::class);
                 return $factory;
             });
     }

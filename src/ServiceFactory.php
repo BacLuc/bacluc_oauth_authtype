@@ -1,12 +1,13 @@
 <?php
 
-namespace Concrete\Core\Authentication\Type\ExternalConcrete5;
+namespace BaclucOauthAuthtype;
 
 use Concrete\Core\Api\OAuth\Service\ExternalConcrete5;
 use Concrete\Core\Config\Repository\Repository;
 use Concrete\Core\Http\Request;
 use Concrete\Core\Url\Resolver\Manager\ResolverManagerInterface;
 use Concrete\Core\Url\Url;
+use Concrete\Package\BaclucOauthAuthtype\Authentication\BaclucOauthHitobito\Controller;
 use OAuth\Common\Consumer\Credentials;
 use OAuth\Common\Http\Uri\Uri;
 use OAuth\Common\Storage\SymfonySession;
@@ -60,15 +61,18 @@ class ServiceFactory
      */
     public function createService(OAuthServiceFactory $factory)
     {
-        $config = $this->config->get('auth.external_concrete5');
+        $handle = Controller::OAUTH_HANDLE;
+        $config = $this->config->get('auth.'.$handle);
 
         $appId = array_get($config, 'appid');
         $appSecret = array_get($config, 'secret');
         $baseUrl = array_get($config, 'url');
 
+
+
         // Get the callback url
         /** @var Url $callbackUrl */
-        $callbackUrl = $this->urlResolver->resolve(['/ccm/system/authentication/oauth2/external_concrete5/callback/']);
+        $callbackUrl = $this->urlResolver->resolve(["/ccm/system/authentication/oauth2/".$handle."/callback/"]);
         if ($callbackUrl->getHost() == '') {
             $callbackUrl = $callbackUrl->setHost($this->request->getHost());
             $callbackUrl = $callbackUrl->setScheme($this->request->getScheme());
@@ -83,11 +87,11 @@ class ServiceFactory
         $baseApiUrl = new Uri($baseUrl);
 
         // Create the service using the oauth service factory
-        return $factory->createService('external_concrete5',
+        return $factory->createService($handle,
             $credentials,
             $storage,
             [
-                HitobitoService::SCOPE_OPENID,
+                HitobitoService::SCOPE_NAME,
             ],
             $baseApiUrl);
     }

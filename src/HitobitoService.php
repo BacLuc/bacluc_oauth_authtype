@@ -1,6 +1,6 @@
 <?php
 
-namespace Concrete\Core\Authentication\Type\ExternalConcrete5;
+namespace BaclucOauthAuthtype;
 
 use OAuth\Common\Http\Exception\TokenResponseException;
 use OAuth\Common\Http\Uri\UriInterface;
@@ -10,24 +10,13 @@ use OAuth\OAuth2\Token\TokenInterface;
 
 class HitobitoService extends AbstractService
 {
-
-    /** @var string Scope for forcing OIDC */
-    const SCOPE_OPENID = 'openid';
-
-    /** @var string Scope for system info */
-    const SCOPE_SYSTEM = 'system';
-
-    /** @var string Scope for site tree info */
-    const SCOPE_SITE = 'site';
-
-    /** @var string Scope for authenticated user */
-    const SCOPE_ACCOUNT = 'account';
-
     /** @var string Authorization path */
-    const PATH_AUTHORIZE = '/oauth/2.0/authorize';
+    const PATH_AUTHORIZE = '/oauth/authorize';
 
     /** @var string Token path */
-    const PATH_TOKEN = '/oauth/2.0/token';
+    const PATH_TOKEN = '/oauth/token';
+
+    public const SCOPE_NAME = 'name';
 
     /**
      * Parses the access token response and returns a TokenInterface.
@@ -55,6 +44,7 @@ class HitobitoService extends AbstractService
 
         return $token;
     }
+
 
     /**
      * Returns the authorization API endpoint.

@@ -1,6 +1,6 @@
 <?php
 
-namespace Concrete\Core\Authentication\Type\ExternalConcrete5;
+namespace BaclucOauthAuthtype;
 
 use Lcobucci\JWT\Claim;
 use Lcobucci\JWT\Parser;
@@ -9,9 +9,9 @@ use OAuth\UserData\Extractor\LazyExtractor;
 
 class Extractor extends LazyExtractor
 {
-    const USER_PATH = '/ccm/api/v1/account/info';
+    const USER_PATH = '/oauth/profile';
 
-    /** @var \Concrete\Core\Authentication\Type\ExternalConcrete5\HitobitoService */
+    /** @var \Concrete\Core\Authentication\Type\ExternalConcrete5\ExternalConcrete5Service */
     protected $service;
 
     public function __construct()
@@ -122,7 +122,8 @@ class Extractor extends LazyExtractor
 
         // If we don't have a proper ID token, let's just fetch the data from the API
         if (!$idTokenString) {
-            return json_decode($this->service->request(self::USER_PATH), true)['data'];
+            $request = $this->service->request(self::USER_PATH);
+            return json_decode($request, true);
         }
 
         $decoder = new Parser();

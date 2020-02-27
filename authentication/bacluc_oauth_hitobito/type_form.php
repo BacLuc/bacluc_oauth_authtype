@@ -8,7 +8,7 @@
     <?= $form->text('displayName', $this->getAuthenticationTypeDisplayName()) ?>
 </div>
 <div class='form-group'>
-    <?= $form->label('url', t('External concrete5 URL')) ?>
+    <?= $form->label('url', t('Hitobito URL')) ?>
     <?= $form->text('url', $data['url']) ?>
 </div>
 <div class='form-group'>

@@ -13,7 +13,7 @@ if (isset($message)) {
 
 }
 
-if ($user->getUserID() && $user->checkLogin()) {
+if (isset($user) && $user->getUserID() && $user->checkLogin()) {
     ?>
     <div class="form-group">
         <span>

@@ -1,8 +1,8 @@
 <?php
 
-namespace Concrete\Authentication\ExternalConcrete5;
+namespace Concrete\Package\BaclucOauthAuthtype\Authentication\BaclucOauthHitobito;
 
-use Concrete\Core\Authentication\Type\ExternalConcrete5\ServiceFactory;
+use BaclucOauthAuthtype\ServiceFactory;
 use Concrete\Core\Authentication\Type\OAuth\OAuth2\GenericOauth2TypeController;
 use Concrete\Core\Config\Repository\Repository;
 use Concrete\Core\Url\Resolver\Manager\ResolverManagerInterface;
@@ -13,6 +13,7 @@ use League\Url\Url;
 
 class Controller extends GenericOauth2TypeController
 {
+    const OAUTH_HANDLE = 'bacluc_oauth_hitobito';
 
     /** @var \Concrete\Core\Authentication\Type\ExternalConcrete5\ServiceFactory */
     protected $factory;
@@ -43,7 +44,7 @@ class Controller extends GenericOauth2TypeController
      */
     public function registrationGroupID()
     {
-        return (int)$this->config->get('auth.external_concrete5.registration.group');
+        return (int)$this->config->get('auth.' . self::OAUTH_HANDLE . '.registration.group');
     }
 
     /**
@@ -54,7 +55,7 @@ class Controller extends GenericOauth2TypeController
      */
     public function supportsRegistration()
     {
-        return (bool)$this->config->get('auth.external_concrete5.registration.enabled', false);
+        return (bool)$this->config->get('auth.' . self::OAUTH_HANDLE . '.registration.enabled', false);
     }
 
     /**
@@ -72,14 +73,14 @@ class Controller extends GenericOauth2TypeController
 
     public function getHandle()
     {
-        return 'external_concrete5';
+        return self::OAUTH_HANDLE;
     }
 
     /**
      * Get the service object associated with this authentication type
      * This method uses the oauth/factory/service object to create our service if one is not set
      *
-     * @return \Concrete\Core\Authentication\Type\ExternalConcrete5\HitobitoService
+     * @return \OAuth\Common\Service\ServiceInterface|\OAuth\OAuth2\Service\AbstractService
      */
     public function getService()
     {
@@ -122,11 +123,11 @@ class Controller extends GenericOauth2TypeController
         $this->authenticationType->setAuthenticationTypeName($passedName);
 
         $config = $this->app->make(Repository::class);
-        $config->save('auth.external_concrete5.url', $args['url']);
-        $config->save('auth.external_concrete5.appid', $args['apikey']);
-        $config->save('auth.external_concrete5.secret', $args['apisecret']);
-        $config->save('auth.external_concrete5.registration.enabled', (bool)$args['registration_enabled']);
-        $config->save('auth.external_concrete5.registration.group', intval($args['registration_group'], 10));
+        $config->save('auth.' . self::OAUTH_HANDLE . '.url', $args['url']);
+        $config->save('auth.' . self::OAUTH_HANDLE . '.appid', $args['apikey']);
+        $config->save('auth.' . self::OAUTH_HANDLE . '.secret', $args['apisecret']);
+        $config->save('auth.' . self::OAUTH_HANDLE . '.registration.enabled', (bool)$args['registration_enabled']);
+        $config->save('auth.' . self::OAUTH_HANDLE . '.registration.group', intval($args['registration_group'], 10));
     }
 
     /**
@@ -137,9 +138,9 @@ class Controller extends GenericOauth2TypeController
     {
         $config = $this->app->make(Repository::class);
         $this->set('form', $this->app->make('helper/form'));
-        $this->set('data', $config->get('auth.external_concrete5', []));
+        $this->set('data', $config->get('auth.' . self::OAUTH_HANDLE, []));
         $this->set('redirectUri',
-            $this->urlResolver->resolve(['/ccm/system/authentication/oauth2/external_concrete5/callback']));
+            $this->urlResolver->resolve(['/ccm/system/authentication/oauth2/' . self::OAUTH_HANDLE . '/callback']));
 
         $list = $this->app->make(GroupList::class);
         $this->set('groups', $list->getResults());
@@ -177,14 +178,19 @@ class Controller extends GenericOauth2TypeController
      */
     private function setData()
     {
-        $data = $this->config->get('auth.external_concrete5', '');
-        $authUrl = $this->urlResolver->resolve(['/ccm/system/authentication/oauth2/external_concrete5/attempt_auth']);
+        $data = $this->config->get('auth.' . self::OAUTH_HANDLE, '');
+        $authUrl =
+            $this->urlResolver->resolve(['/ccm/system/authentication/oauth2/' . self::OAUTH_HANDLE . '/attempt_auth']);
         $attachUrl =
-            $this->urlResolver->resolve(['/ccm/system/authentication/oauth2/external_concrete5/attempt_attach']);
+            $this->urlResolver->resolve([
+                '/ccm/system/authentication/oauth2/' .
+                self::OAUTH_HANDLE .
+                '/attempt_attach'
+            ]);
         $baseUrl = $this->urlResolver->resolve(['/']);
         $path = $baseUrl->getPath();
         $path->remove('index.php');
-        $name = trim((string)array_get($data, 'name', t('External concrete5')));
+        $name = trim((string)array_get($data, 'name', t('External oauth')));
 
         $this->set('data', $data);
         $this->set('authUrl', $authUrl);

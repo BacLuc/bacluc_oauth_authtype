@@ -1,9 +1,11 @@
 <?php
 
-namespace Concrete\Package\BaclucOauthAuthType;
+namespace Concrete\Package\BaclucOauthAuthtype;
 
 defined('C5_EXECUTE') or die(_("Access Denied."));
 
+use BaclucOauthAuthtype\ServiceProvider;
+use Concrete\Core\Authentication\AuthenticationType;
 use Concrete\Core\Package\Package;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -34,8 +36,7 @@ class Controller extends Package
         $em->getConnection()->beginTransaction();
         try {
             $pkg = parent::install();
-            //add blocktypeset
-
+            AuthenticationType::add(Authentication\BaclucOauthHitobito\Controller::OAUTH_HANDLE, "Hitobito", 0, $pkg);
             $em->getConnection()->commit();
         } catch (Exception $e) {
             $em->getConnection()->rollBack();
@@ -48,6 +49,9 @@ class Controller extends Package
         $em = $this->app->make(EntityManagerInterface::class);
         $em->getConnection()->beginTransaction();
         try {
+            foreach (AuthenticationType::getListByPackage($this) as $authenticationType) {
+                $authenticationType->delete();
+            }
             parent::uninstall();
             $em->getConnection()->commit();
         } catch (Exception $e) {
@@ -58,7 +62,15 @@ class Controller extends Package
 
     public function getPackageAutoloaderRegistries()
     {
-        return ["src" => "BaclucOauthAuthType"];
+        return [
+            "src" => "BaclucOauthAuthtype"
+        ];
+    }
+
+    public function on_start()
+    {
+        $serviceProvider = new ServiceProvider($this->app);
+        $serviceProvider->register();
     }
 
 }
