@@ -15,7 +15,7 @@ class Controller extends GenericOauth2TypeController
 {
     const OAUTH_HANDLE = 'bacluc_oauth_hitobito';
 
-    /** @var \Concrete\Core\Authentication\Type\ExternalConcrete5\ServiceFactory */
+    /** @var \Concrete\Core\Authentication\Type\ExternalConcrete\ServiceFactory */
     protected $factory;
 
     /** @var \Concrete\Core\Url\Resolver\Manager\ResolverManagerInterface */

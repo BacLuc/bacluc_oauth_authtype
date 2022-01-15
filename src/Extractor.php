@@ -11,7 +11,7 @@ class Extractor extends LazyExtractor
 {
     const USER_PATH = '/oauth/profile';
 
-    /** @var \Concrete\Core\Authentication\Type\ExternalConcrete5\ExternalConcrete5Service */
+    /** @var \Concrete\Core\Authentication\Type\ExternalConcrete\ExternalConcreteService */
     protected $service;
 
     public function __construct()
