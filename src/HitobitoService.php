@@ -2,11 +2,14 @@
 
 namespace BaclucOauthAuthtype;
 
+use Concrete\Core\Logging\Channels;
+use Concrete\Core\Support\Facade\Application;
 use OAuth\Common\Http\Exception\TokenResponseException;
 use OAuth\Common\Http\Uri\UriInterface;
 use OAuth\OAuth2\Service\AbstractService;
 use OAuth\OAuth2\Token\StdOAuth2Token;
 use OAuth\OAuth2\Token\TokenInterface;
+use Psr\Log\LoggerInterface;
 
 class HitobitoService extends AbstractService
 {
@@ -35,12 +38,12 @@ class HitobitoService extends AbstractService
         }
 
         $token = new StdOAuth2Token();
-        $token->setAccessToken($body['access_token']);
-        $token->setRefreshToken($body['refresh_token']);
-        $token->setLifetime($body['expires_in']);
+        $token->setAccessToken($body['access_token'] ?? '');
+        $token->setRefreshToken($body['refresh_token'] ?? '');
+        $token->setLifetime($body['expires_in'] ?? '');
 
         // Store the id_token as an "extra param"
-        $token->setExtraParams(['id_token' => $body['id_token']]);
+        $token->setExtraParams(['id_token' => $body['id_token'] ?? '']);
 
         return $token;
     }
@@ -95,5 +98,14 @@ class HitobitoService extends AbstractService
     protected function getAuthorizationMethod()
     {
         return self::AUTHORIZATION_METHOD_HEADER_BEARER;
+    }
+
+    protected function getExtraOAuthHeaders() {
+        return
+            [
+                "Content-Type" => "application/x-www-form-urlencoded",
+                "Accept" => "application/json"
+            ];
+
     }
 }

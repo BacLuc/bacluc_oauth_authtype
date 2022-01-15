@@ -1,4 +1,11 @@
-<?php defined('C5_EXECUTE') or die('Access denied.'); ?>
+<?php defined('C5_EXECUTE') or die('Access denied.');
+
+$redirectUri = $redirectUri ?? '';
+$redirectUri = $redirectUri ?? '';
+$groups = $groups ?? [];
+$registration = $data['registration'] ?? [];
+$registrationEnabled = $registration['enabled'] ?? false;
+?>
 <div class="alert alert-info">
     <p><?php echo t('Set the "Redirect URI" to: %s', ' <code>' . $redirectUri . '</code>'); ?></p>
 </div>
@@ -9,16 +16,16 @@
 </div>
 <div class='form-group'>
     <?= $form->label('url', t('Hitobito URL')) ?>
-    <?= $form->text('url', $data['url']) ?>
+    <?= $form->text('url', $data['url'] ?? '') ?>
 </div>
 <div class='form-group'>
     <?= $form->label('apikey', t('App ID')) ?>
-    <?= $form->text('apikey', $data['appid']) ?>
+    <?= $form->text('apikey', $data['appid'] ?? '') ?>
 </div>
 <div class='form-group'>
     <?= $form->label('apisecret', t('App Secret')) ?>
     <div class="input-group">
-        <?= $form->password('apisecret', $data['secret'], array('autocomplete' => 'off')) ?>
+        <?= $form->password('apisecret', $data['secret'] ?? '', array('autocomplete' => 'off')) ?>
         <span class="input-group-btn">
         <button id="showsecret" class="btn btn-warning" type="button"><?php echo t('Show secret key') ?></button>
       </span>
@@ -28,7 +35,7 @@
     <div class="input-group">
         <label type="checkbox">
             <input type="checkbox" name="registration_enabled" value="1"
-                   <?= array_get($data, 'registration.enabled', false) ? 'checked' : '' ?>>
+                   <?= $registrationEnabled ? 'checked' : '' ?>>
             <span style="font-weight:normal"><?= t('Allow automatic registration') ?></span>
         </label>
         </span>

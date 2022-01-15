@@ -31,17 +31,8 @@ class Controller extends Package
 
     public function install()
     {
-        $em = $this->app->make(EntityManagerInterface::class);
-        //begin transaction, so when block install fails, but parent::install was successfully, you don't have to uninstall the package
-        $em->getConnection()->beginTransaction();
-        try {
-            $pkg = parent::install();
-            AuthenticationType::add(Authentication\BaclucOauthHitobito\Controller::OAUTH_HANDLE, "Hitobito", 0, $pkg);
-            $em->getConnection()->commit();
-        } catch (Exception $e) {
-            $em->getConnection()->rollBack();
-            throw $e;
-        }
+        $pkg = parent::install();
+        AuthenticationType::add(Authentication\BaclucOauthHitobito\Controller::OAUTH_HANDLE, "Hitobito", 0, $pkg);
     }
 
     public function uninstall()

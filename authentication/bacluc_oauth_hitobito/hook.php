@@ -1,4 +1,7 @@
-<?php defined('C5_EXECUTE') or die('Access denied.'); ?>
+<?php defined('C5_EXECUTE') or die('Access denied.');
+$assetUrl = $assetUrl ?? '';
+
+?>
 
 <div class="form-group">
         <span>

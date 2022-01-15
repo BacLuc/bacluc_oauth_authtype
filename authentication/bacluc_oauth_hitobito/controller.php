@@ -126,7 +126,8 @@ class Controller extends GenericOauth2TypeController
         $config->save('auth.' . self::OAUTH_HANDLE . '.url', $args['url']);
         $config->save('auth.' . self::OAUTH_HANDLE . '.appid', $args['apikey']);
         $config->save('auth.' . self::OAUTH_HANDLE . '.secret', $args['apisecret']);
-        $config->save('auth.' . self::OAUTH_HANDLE . '.registration.enabled', (bool)$args['registration_enabled']);
+        $registrationEnabled = $args['registration_enabled'] ?? false;
+        $config->save('auth.' . self::OAUTH_HANDLE . '.registration.enabled', (bool)$registrationEnabled);
         $config->save('auth.' . self::OAUTH_HANDLE . '.registration.group', intval($args['registration_group'], 10));
     }
 
@@ -150,7 +151,7 @@ class Controller extends GenericOauth2TypeController
      * Controller method for form
      * This method is called just before form.php is rendered, use it to set data for that template
      */
-    public function form()
+    public function form(...$params)
     {
         $this->setData();
     }
